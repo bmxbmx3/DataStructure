@@ -1,0 +1,8 @@
+//
+// Created by Administrator on 2019/12/16 0016.
+//
+
+#ifndef DATASTRUCTURE_STACK_AND_QUEUE_H
+#define DATASTRUCTURE_STACK_AND_QUEUE_H
+
+#endif //DATASTRUCTURE_STACK_AND_QUEUE_H
