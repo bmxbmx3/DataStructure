@@ -523,6 +523,8 @@ float cal_in_result(char exp[], int max_size) {
     return s1[top1];
 }
 
+//video11---------------------------------------------------------
+
 /**
  * 用栈求后缀表达式值
  * @param exp 前缀表达式字符串所存数组
@@ -761,7 +763,7 @@ void infix_to_postfix(char infix[], char s2[], int *top2, int max_size) {
  * @param top2 s2栈顶指针
  * @param max_size 中缀表达式字符个数
  */
-void infix_to_prefix(char infix[], int len,char s2[], int *top2, int max_size) {
+void infix_to_prefix(char infix[], int len, char s2[], int *top2, int max_size) {
     /**
       * 变量定义：
       *
@@ -771,9 +773,9 @@ void infix_to_prefix(char infix[], int len,char s2[], int *top2, int max_size) {
       */
     char s1[max_size];
     int top1 = -1;
-    int i = len-1;
+    int i = len - 1;
 
-    while (i>=0) {
+    while (i >= 0) {
         /**
          * 中缀表达式中若遇到数字直接压入s2栈中
          */
@@ -853,4 +855,114 @@ void infix_to_prefix(char infix[], int len,char s2[], int *top2, int max_size) {
         s2[*top2] = s1[top1];
         top1--;
     }
+}
+
+//video12------------------------------------------------------------------------------
+
+/**
+ * 判断一对括号是否匹配
+ * @param left 左括号字符
+ * @param right 右括号字符
+ * @return 如果匹配，返1，否则返0
+ */
+int is_matched(char left, char right) {
+    if (left == '(' && right == ')') {
+        return 1;
+    } else if (left == '[' && right == ']') {
+        return 1;
+    } else if (left == '{' && right == '}') {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * 判断字符串中所有括号是否匹配
+ * @param exp 待判断的字符串
+ * @param max_size 暂存待处理括号的栈的容量
+ * @return
+ */
+int is_parentheses_balanced(char exp[], int max_size) {
+    //s[]，暂存待处理括号的辅助栈
+    char s[max_size];
+    int top = -1;
+
+    /**
+     * 从左往右遍历exp[]字符串进行括号匹配
+     */
+    for (int i = 0; exp[i] != '\0'; ++i) {
+        /**
+         * 碰到左括号直接入栈
+         */
+        if (exp[i] == '(' ||
+            exp[i] == '[' ||
+            exp[i] == '{') {
+            top++;
+            s[top] = exp[i];
+        }
+
+        /**
+         * 碰到右括号，弹出一个栈顶元素与之匹配
+         */
+        if (exp[i] == ')' ||
+            exp[i] == ']' ||
+            exp[i] == '}') {
+            /*
+             * 如果栈空，表明括号匹配失败
+             */
+            if (top == -1) {
+                return 0;
+            }
+
+            //弹出栈顶元素
+            char left = s[top];
+            top--;
+
+            /**
+             * 匹配栈顶元素与右括号，如果不匹配则括号匹配失败
+             */
+            if (is_matched(left, exp[i]) == 0) {
+                return 0;
+            }
+        }
+    }
+
+    /**
+     * 遍历完exp[]字符串，还有未匹配的括号，则括号匹配一定失败
+     */
+    if (top > -1) {
+        return 0;
+    }
+    return 1;
+}
+
+/**
+ * 递归函数用栈展开求值
+ *
+ * 递归函数F(m)=m*F(m/3)
+ * @param m 递归的入参
+ * @param max_size 暂存参数m的栈的容量
+ * @return 递归求值结果
+ */
+int cal_f(int m, int max_size) {
+    int cum = 1;
+    //s[]，暂存每个递归入参的栈
+    int s[max_size];
+    int top = -1;
+
+    //暂存每个递归入参
+    while (m != 0) {
+        top++;
+        s[top] = m;
+        m /= 3;
+    }
+
+    //从栈中依次弹出递归的入参，相乘求出结果保存到cum中
+    while (top != -1) {
+        cum *= s[top];
+        top--;
+    }
+
+    return cum;
 }
