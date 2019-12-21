@@ -258,10 +258,11 @@ int shared_stack_s1_empty(int top[]) {
 /**
  * 共享栈：判断s2栈空
  * @param top s1、s2栈顶位置
+ * @param max_size 共享栈容量
  * @return 判断结果
  */
-int shared_stack_s2_empty(int top[]) {
-    if (top[1] == -1) {
+int shared_stack_s2_empty(int top[],int max_size) {
+    if (top[1] == max_size) {
         return 1;
     } else {
         return 0;
